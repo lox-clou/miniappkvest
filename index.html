@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Заброшенный особняк | Финальная версия</title>
+    
+    <!-- Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: #f0e6d9;
+            background: #0a0303;
+            overflow-x: hidden;
+        }
+
+        /* Динамический фон */
+        .dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, #2c1a1a, #0a0303);
+            transition: background 0.5s ease;
+            z-index: -3;
+        }
+
+        /* Текстура */
+        .texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 4px);
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* Частицы */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(180, 130, 70, 0.2);
+            border-radius: 50%;
+            animation: floatParticle linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
+        }
+
+        /* Туман */
+        .fog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.08"><defs><filter id="fog"><feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="3"/><feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0   0 0 0 0.15 0"/></filter></defs><rect width="100" height="100" filter="url(%23fog)"/></svg>');
+            background-size: 200% 200%;
+            animation: fogMove 40s infinite alternate;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes fogMove {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.2) translate(-5%, -5%); }
+        }
+
+        /* Основной контейнер */
+        .app {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 16px 16px 80px;
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+        }
+
+        /* Шапка */
+        .header {
+            background: rgba(20, 10, 8, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(180, 130, 70, 0.2);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            letter-spacing: 4px;
+            color: #e4c580;
+            text-shadow: 0 0 10px #b8860b;
+            margin-bottom: 4px;
+        }
+
+        .location-badge {
+            display: inline-block;
+            background: rgba(0,0,0,0.4);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #d4af37;
+            border: 1px solid rgba(180,130,70,0.3);
+            margin-top: 8px;
+        }
+
+        /* Карточка локации */
+        .location-card {
+            background: rgba(18, 10, 8, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(180, 130, 70, 0.2);
+            position: relative;
+            overflow: hidden;
+            min-height: 160px;
+        }
+
+        /* Атмосферные элементы */
+        .atmosphere {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .door {
+            position: absolute;
+            width: 35px;
+            height: 70px;
+            background: rgba(100, 60, 30, 0.15);
+            border: 1px solid rgba(180, 130, 70, 0.3);
+            border-radius: 6px;
+            animation: doorAnim 4s infinite alternate;
+        }
+
+        .door1 { left: 15%; top: 20%; }
+        .door2 { left: 45%; top: 20%; animation-delay: 1s; }
+        .door3 { left: 75%; top: 20%; animation-delay: 2s; }
+
+        @keyframes doorAnim {
+            0% { transform: scale(1); opacity: 0.2; }
+            100% { transform: scale(1.08); opacity: 0.5; }
+        }
+
+        .book {
+            position: absolute;
+            width: 12px;
+            height: 18px;
+            background: rgba(180, 130, 70, 0.2);
+            border-radius: 2px;
+            animation: bookFloat 6s infinite alternate;
+        }
+
+        .book1 { left: 20%; top: 30%; }
+        .book2 { left: 50%; top: 45%; animation-delay: 2s; }
+        .book3 { left: 80%; top: 35%; animation-delay: 4s; }
+
+        @keyframes bookFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .mirror {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            width: 50px;
+            height: 70px;
+            border: 2px solid rgba(180, 130, 70, 0.3);
+            border-radius: 6px;
+            animation: mirrorGlow 3s infinite alternate;
+        }
+
+        @keyframes mirrorGlow {
+            0% { box-shadow: 0 0 5px rgba(180,130,70,0.3); }
+            100% { box-shadow: 0 0 20px rgba(180,130,70,0.6); }
+        }
+
+        .shadow {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            width: 25px;
+            height: 45px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50% 50% 0 0;
+            animation: shadowMove 5s infinite alternate;
+        }
+
+        @keyframes shadowMove {
+            0% { transform: translateX(0); opacity: 0.3; }
+            100% { transform: translateX(5px); opacity: 0.6; }
+        }
+
+        .whisper {
+            position: absolute;
+            left: 70%;
+            top: 40%;
+            font-size: 20px;
+            color: rgba(180, 130, 70, 0.3);
+            animation: whisperAnim 5s infinite;
+        }
+
+        @keyframes whisperAnim {
+            0% { opacity: 0; transform: translateX(0); }
+            20% { opacity: 0.3; transform: translateX(-5px); }
+            40% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .creak {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(180,130,70,0.3), transparent);
+            animation: creakAnim 3s infinite;
+        }
+
+        @keyframes creakAnim {
+            0% { transform: scaleX(1); opacity: 0.2; }
+            50% { transform: scaleX(1.2); opacity: 0.5; }
+            100% { transform: scaleX(1); opacity: 0.2; }
+        }
+
+        .dust {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255,255,240,0.2);
+            border-radius: 50%;
+            animation: dustFall 10s infinite linear;
+        }
+
+        @keyframes dustFall {
+            0% { transform: translateY(-50px); opacity: 0; }
+            50% { opacity: 0.3; }
+            100% { transform: translateY(150px); opacity: 0; }
+        }
+
+        .location-name {
+            font-size: 22px;
+            color: #e4c580;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-desc {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #d9c8b5;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Статистика */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-item {
+            background: rgba(18, 10, 8, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 14px 5px;
+            text-align: center;
+            border: 1px solid rgba(180, 130, 70, 0.2);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: #e9d2a5;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #b98a5f;
+        }
+
+        /* Предметы */
+        .items-section {
+            background: rgba(18, 10, 8, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(180, 130, 70, 0.2);
+        }
+
+        .items-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .item-chip {
+            background: rgba(50, 30, 20, 0.9);
+            border: 1px solid #b8860b;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #ffd700;
+        }
+
+        /* Кнопка взятия */
+        .take-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4a3724, #2d1e14);
+            border: 2px solid #d4af37;
+            color: #ffecb3;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 0 #3d2b1b;
+        }
+
+        .take-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #3d2b1b;
+        }
+
+        .take-btn:disabled {
+            opacity: 0.5;
+            transform: none;
+            box-shadow: 0 4px 0 #3d2b1b;
+            cursor: not-allowed;
+        }
+
+        /* Действия */
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .action-btn {
+            background: rgba(25, 15, 12, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid #8b5a2b;
+            color: #f0e0c0;
+            padding: 14px 5px;
+            border-radius: 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            background: rgba(45, 25, 18, 0.9);
+            border-color: #b8860b;
+            color: #ffd700;
+        }
+
+        /* Инвентарь */
+        .inventory {
+            background: rgba(18, 10, 8, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 20px;
+            border: 1px solid rgba(180, 130, 70, 0.2);
+        }
+
+        .inventory-title {
+            font-size: 16px;
+            color: #e4c580;
+            margin-bottom: 12px;
+        }
+
+        .inventory-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .inventory-item {
+            background: rgba(60, 35, 25, 0.9);
+            border: 1px solid #b8860b;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 13px;
+            color: #f5dcaa;
+        }
+
+        /* Записка */
+        .note-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(20, 10, 5, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid #b8860b;
+            border-radius: 32px;
+            padding: 30px;
+            max-width: 300px;
+            width: 90%;
+            text-align: center;
+            z-index: 1000;
+            animation: notePop 0.3s;
+        }
+
+        @keyframes notePop {
+            from { transform: translate(-50%, -30%); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+
+        .note-text {
+            font-family: 'Courier New', monospace;
+            color: #d4af37;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .note-close {
+            background: #4a2e1e;
+            border: 1px solid #b8860b;
+            color: #ffd700;
+            padding: 8px 25px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .note-close:hover {
+            background: #5a3e2e;
+        }
+
+        /* Уведомление */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(18, 10, 6, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid #b8860b;
+            color: #f5e6c4;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 15px;
+            z-index: 1000;
+            animation: toastSlide 0.3s;
+            white-space: nowrap;
+            max-width: 90%;
+        }
+
+        @keyframes toastSlide {
+            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        /* Концовка */
+        .ending {
+            background: rgba(15, 8, 5, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 40px 25px;
+            text-align: center;
+            border: 2px solid rgba(180, 130, 70, 0.4);
+            margin: 20px 0;
+        }
+
+        .ending-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .ending-bad { color: #b34a4a; }
+        .ending-good { color: #ffd966; }
+        .ending-neutral { color: #b98a5f; }
+        .ending-secret { color: #b584b5; }
+
+        .ending-desc {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+        }
+
+        .new-game-btn {
+            background: linear-gradient(135deg, #4a3724, #2d1e14);
+            border: 2px solid #d4af37;
+            color: #ffecb3;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #3d2b1b;
+        }
+
+        .new-game-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #3d2b1b;
+        }
+
+        @media (max-width: 380px) {
+            .actions { grid-template-columns: 1fr; }
+            .stat-value { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dynamic-bg" id="dynamicBg"></div>
+    <div class="texture"></div>
+    <div class="particles" id="particles"></div>
+    <div class="fog"></div>
+
+    <div class="app" id="app"></div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+
+        // Частицы
+        function initParticles() {
+            const container = document.getElementById('particles');
+            container.innerHTML = '';
+            for (let i = 0; i < 15; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                p.style.animationDelay = Math.random() * 10 + 's';
+                p.style.width = (Math.random() * 4 + 1) + 'px';
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        }
+        initParticles();
+
+        // Состояние игры
+        let gameState = {
+            location: 'start',
+            inventory: [],
+            health: 100,
+            sanity: 100,
+            flags: {},
+            ending: null
+        };
+
+        // Цвета фона
+        const bgColors = {
+            start: 'radial-gradient(circle at 30% 30%, #2c1a1a, #0a0303)',
+            hall: 'radial-gradient(circle at 70% 20%, #2a1515, #080303)',
+            living_room: 'radial-gradient(circle at 50% 50%, #3d2a1a, #150a05)',
+            library: 'radial-gradient(circle at 30% 70%, #2a1f2a, #0f0a0f)',
+            dining_room: 'radial-gradient(circle at 80% 40%, #3d2a1a, #1a0d05)',
+            stairs: 'radial-gradient(circle at 50% 30%, #2a1f1a, #0f0a05)',
+            second_floor: 'radial-gradient(circle at 20% 60%, #2a1a1a, #0f0808)',
+            attic: 'radial-gradient(circle at 60% 50%, #2a1a1f, #0f080a)',
+            basement: 'radial-gradient(circle at 40% 60%, #1f0f0f, #080303)'
+        };
+
+        // Локации
+        const locations = {
+            start: {
+                name: 'ЗАБРОШЕННЫЙ ОСОБНЯК',
+                desc: 'Ты стоишь перед старым особняком. Дверь приоткрыта, изнутри доносится странный звук.',
+                bg: 'start',
+                items: ['🔦 Фонарик', '🪔 Спички'],
+                itemsIds: ['flashlight', 'matches'],
+                atmosphere: 'start',
+                actions: [
+                    { text: '🚪 Войти', action: 'hall' },
+                    { text: '👀 Осмотреться', action: 'search' },
+                    { text: '📞 Позвонить', action: 'call' },
+                    { text: '🚗 Уехать', action: 'escape' }
+                ]
+            },
+            hall: {
+                name: 'ГЛАВНЫЙ ХОЛЛ',
+                desc: 'Огромный холл с портретами на стенах. Три двери ведут в разные комнаты.',
+                bg: 'hall',
+                items: ['🗝️ Ключ', '📜 Записка'],
+                itemsIds: ['key', 'note'],
+                atmosphere: 'hall',
+                actions: [
+                    { text: '🚪 Гостиная', action: 'living_room' },
+                    { text: '📚 Библиотека', action: 'library' },
+                    { text: '🍽️ Столовая', action: 'dining_room' },
+                    { text: '⬆️ Лестница', action: 'stairs' }
+                ]
+            },
+            living_room: {
+                name: 'ГОСТИНАЯ',
+                desc: 'Уютная когда-то комната. Камин давно погас, на полу валяются старые фотографии.',
+                bg: 'living_room',
+                items: ['📔 Дневник', '⏰ Часы'],
+                itemsIds: ['diary', 'clock'],
+                atmosphere: 'living_room',
+                actions: [
+                    { text: '🔥 Камин', action: 'search' },
+                    { text: '📸 Фото', action: 'search' },
+                    { text: '🔍 Обыскать', action: 'search' },
+                    { text: '🚪 Назад', action: 'hall' }
+                ]
+            },
+            library: {
+                name: 'БИБЛИОТЕКА',
+                desc: 'Тысячи книг. Одна из них светится в темноте.',
+                bg: 'library',
+                items: ['📖 Книга', '👓 Очки'],
+                itemsIds: ['book', 'glasses'],
+                atmosphere: 'library',
+                actions: [
+                    { text: '📖 Взять книгу', action: 'takeBook' },
+                    { text: '🔍 Тайник', action: 'search' },
+                    { text: '🪑 Стол', action: 'search' },
+                    { text: '🚪 Назад', action: 'hall' }
+                ]
+            },
+            dining_room: {
+                name: 'СТОЛОВАЯ',
+                desc: 'Длинный стол накрыт для ужина. Из темноты доносится шепот.',
+                bg: 'dining_room',
+                items: ['🔪 Серебро', '🕯️ Свеча'],
+                itemsIds: ['silver', 'candle'],
+                atmosphere: 'dining_room',
+                actions: [
+                    { text: '🕯️ Зажечь', action: 'lightCandle' },
+                    { text: '👂 Шепот', action: 'listen' },
+                    { text: '🔍 Обыскать', action: 'search' },
+                    { text: '🚪 Назад', action: 'hall' }
+                ]
+            },
+            stairs: {
+                name: 'ЛЕСТНИЦА',
+                desc: 'Старая лестница скрипит. Наверху кто-то ходит.',
+                bg: 'stairs',
+                items: [],
+                itemsIds: [],
+                atmosphere: 'stairs',
+                actions: [
+                    { text: '⬆️ Наверх', action: 'second_floor' },
+                    { text: '🔦 Фонарик', action: 'flashlight' },
+                    { text: '⬇️ Вниз', action: 'hall' },
+                    { text: '🕵️ Осмотреть', action: 'search' }
+                ]
+            },
+            second_floor: {
+                name: 'ВТОРОЙ ЭТАЖ',
+                desc: 'Коридор с дверями. Из-под одной двери пробивается свет.',
+                bg: 'second_floor',
+                items: [],
+                itemsIds: [],
+                atmosphere: 'second_floor',
+                actions: [
+                    { text: '🚪 Постучать', action: 'knock' },
+                    { text: '🔍 Двери', action: 'checkDoors' },
+                    { text: '⬆️ Чердак', action: 'attic' },
+                    { text: '⬇️ Вниз', action: 'stairs' }
+                ]
+            },
+            attic: {
+                name: 'ЧЕРДАК',
+                desc: 'Пыльно. В углу стоит старое зеркало. В отражении кто-то есть...',
+                bg: 'attic',
+                items: ['⚰️ Сундук', '💍 Кольцо'],
+                itemsIds: ['chest', 'ring'],
+                atmosphere: 'attic',
+                actions: [
+                    { text: '🪞 Зеркало', action: 'mirror' },
+                    { text: '📦 Сундук', action: 'chest' },
+                    { text: '🔍 Коробки', action: 'search' },
+                    { text: '⬇️ Вниз', action: 'second_floor' }
+                ]
+            }
+        };
+
+        // Предметы
+        const items = {
+            flashlight: '🔦 Фонарик',
+            matches: '🪔 Спички',
+            key: '🗝️ Ключ',
+            note: '📜 Записка',
+            diary: '📔 Дневник',
+            clock: '⏰ Часы',
+            book: '📖 Книга',
+            glasses: '👓 Очки',
+            silver: '🔪 Серебро',
+            candle: '🕯️ Свеча',
+            chest: '⚰️ Сундук',
+            ring: '💍 Кольцо'
+        };
+
+        // Концовки
+        const endings = {
+            death: { name: '💀 СМЕРТЬ', desc: 'Ты погиб в стенах этого проклятого особняка...', type: 'bad' },
+            madness: { name: '🧠 БЕЗУМИЕ', desc: 'Твой разум не выдержал ужасов этого места.', type: 'bad' },
+            escape: { name: '🏃 ПОБЕГ', desc: 'Ты вырвался из особняка! Но часть тебя навсегда осталась там.', type: 'neutral' },
+            treasure: { name: '💰 СОКРОВИЩА', desc: 'Ты нашел сокровища! Но проклятие следует за тобой.', type: 'good' },
+            ghost: { name: '👻 ПРИЗРАК', desc: 'Твой дух остался в особняке навечно...', type: 'secret' }
+        };
+
+        function setBackground(bgKey) {
+            document.getElementById('dynamicBg').style.background = bgColors[bgKey] || bgColors.start;
+        }
+
+        function showToast(text) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = text;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+
+        function showNote(text) {
+            const note = document.createElement('div');
+            note.className = 'note-popup';
+            note.innerHTML = `
+                <div class="note-text">📜 ${text}</div>
+                <button class="note-close" onclick="this.parentElement.remove()">Понятно</button>
+            `;
+            document.body.appendChild(note);
+        }
+
+        function takeItem() {
+            const loc = locations[gameState.location];
+            
+            if (loc.itemsIds && loc.itemsIds.length > 0) {
+                const itemId = loc.itemsIds[0];
+                
+                if (!gameState.inventory.includes(itemId)) {
+                    gameState.inventory.push(itemId);
+                    
+                    showToast(`✅ Взят: ${items[itemId]}`);
+                    
+                    if (itemId === 'note') {
+                        showNote('"Не верь теням, они повсюду..."');
+                        gameState.sanity -= 5;
+                    }
+                    if (itemId === 'book') {
+                        showNote('"Тьма внутри тебя..."');
+                        gameState.sanity -= 5;
+                    }
+                    if (itemId === 'ring') {
+                        showNote('Кольцо обжигает палец...');
+                        gameState.sanity -= 10;
+                    }
+                    
+                    loc.items.shift();
+                    loc.itemsIds.shift();
+                    
+                    render();
+                }
+            } else {
+                showToast('❌ Здесь нет предметов');
+            }
+        }
+
+        function doAction(actionCode) {
+            if (gameState.ending) return;
+            
+            const loc = locations[gameState.location];
+            
+            // Перемещение
+            if (locations[actionCode]) {
+                gameState.location = actionCode;
+                setBackground(locations[actionCode].bg);
+                showToast(`🚪 Переход в ${locations[actionCode].name}`);
+                render();
+                return;
+            }
+            
+            // Действия
+            if (actionCode === 'escape') {
+                gameState.ending = 'escape';
+                render();
+            }
+            else if (actionCode === 'search') {
+                if (loc.itemsIds.length > 0) {
+                    showToast('🔍 Ты что-то нашел!');
+                } else {
+                    showToast('🔍 Ничего нет...');
+                    gameState.sanity -= 2;
+                    render();
+                }
+            }
+            else if (actionCode === 'call') {
+                showToast('📞 Гудки...');
+                setTimeout(() => showToast('📞 Никто не отвечает...'), 1000);
+                setTimeout(() => {
+                    showToast('📞 Только шум...');
+                    gameState.sanity -= 5;
+                    render();
+                }, 2000);
+            }
+            else if (actionCode === 'listen') {
+                const whispers = ['"Уходи..."', '"Помоги..."', '"Здесь опасно..."'];
+                showToast(`👂 ${whispers[Math.floor(Math.random() * whispers.length)]}`);
+                gameState.sanity -= 5;
+                render();
+            }
+            else if (actionCode === 'flashlight') {
+                if (gameState.inventory.includes('flashlight')) {
+                    showToast('🔦 Тень метнулась!');
+                    gameState.sanity -= 3;
+                } else {
+                    showToast('🔦 Нет фонарика');
+                }
+                render();
+            }
+            else if (actionCode === 'knock') {
+                showToast('🚪 Тук-тук-тук...');
+                setTimeout(() => showToast('🚪 Дверь открывается...'), 800);
+                setTimeout(() => {
+                    showToast('👀 Там никого...');
+                    gameState.sanity -= 5;
+                    render();
+                }, 1600);
+            }
+            else if (actionCode === 'checkDoors') {
+                showToast('🚪 Двери скрипят...');
+                if (!gameState.flags.basement && Math.random() < 0.3) {
+                    showToast('🔍 Найден проход в подвал!');
+                    gameState.flags.basement = true;
+                }
+                render();
+            }
+            else if (actionCode === 'mirror') {
+                showToast('🪞 Зеркало затуманилось...');
+                setTimeout(() => {
+                    if (gameState.inventory.includes('glasses')) {
+                        showToast('👓 Ты видишь призрака! -20 здоровья');
+                        gameState.health -= 20;
+                        if (gameState.health <= 0) gameState.ending = 'death';
+                    } else {
+                        showToast('👤 Силуэт исчез... -5 рассудка');
+                        gameState.sanity -= 5;
+                        if (gameState.sanity <= 0) gameState.ending = 'madness';
+                    }
+                    render();
+                }, 1500);
+            }
+            else if (actionCode === 'chest') {
+                if (gameState.inventory.includes('key')) {
+                    showToast('⚰️ Сундук открывается...');
+                    setTimeout(() => {
+                        showToast('✨ Там кольцо!');
+                        gameState.inventory.push('ring');
+                        gameState.ending = 'treasure';
+                        render();
+                    }, 1500);
+                } else {
+                    showToast('🔒 Сундук заперт');
+                }
+            }
+            else if (actionCode === 'takeBook') {
+                if (!gameState.inventory.includes('book')) {
+                    gameState.inventory.push('book');
+                    showToast('📖 Книга открывается...');
+                    setTimeout(() => {
+                        showNote('"Тьма внутри тебя"');
+                        gameState.sanity -= 5;
+                        render();
+                    }, 1000);
+                }
+            }
+            else if (actionCode === 'lightCandle') {
+                if (gameState.inventory.includes('matches') && gameState.inventory.includes('candle')) {
+                    showToast('🕯️ Свеча зажглась!');
+                } else {
+                    showToast('🪔 Нет спичек или свечи');
+                }
+                render();
+            }
+        }
+
+        function newGame() {
+            gameState = {
+                location: 'start',
+                inventory: [],
+                health: 100,
+                sanity: 100,
+                flags: {},
+                ending: null
+            };
+            
+            // Сброс предметов
+            locations.start.items = ['🔦 Фонарик', '🪔 Спички'];
+            locations.start.itemsIds = ['flashlight', 'matches'];
+            locations.hall.items = ['🗝️ Ключ', '📜 Записка'];
+            locations.hall.itemsIds = ['key', 'note'];
+            locations.living_room.items = ['📔 Дневник', '⏰ Часы'];
+            locations.living_room.itemsIds = ['diary', 'clock'];
+            locations.library.items = ['📖 Книга', '👓 Очки'];
+            locations.library.itemsIds = ['book', 'glasses'];
+            locations.dining_room.items = ['🔪 Серебро', '🕯️ Свеча'];
+            locations.dining_room.itemsIds = ['silver', 'candle'];
+            locations.attic.items = ['⚰️ Сундук', '💍 Кольцо'];
+            locations.attic.itemsIds = ['chest', 'ring'];
+            
+            setBackground(bgColors.start);
+            showToast('🔄 Новая игра');
+            render();
+        }
+
+        function render() {
+            const app = document.getElementById('app');
+            
+            if (gameState.ending) {
+                const end = endings[gameState.ending] || { name: 'КОНЕЦ', desc: '', type: 'neutral' };
+                
+                app.innerHTML = `
+                    <div class="ending">
+                        <div class="ending-title ending-${end.type}">${end.name}</div>
+                        <div class="ending-desc">${end.desc}</div>
+                        <div class="stats">
+                            <div class="stat-item"><div class="stat-value">${gameState.health}</div><div>❤️</div></div>
+                            <div class="stat-item"><div class="stat-value">${gameState.sanity}</div><div>🧠</div></div>
+                            <div class="stat-item"><div class="stat-value">${gameState.inventory.length}</div><div>🎒</div></div>
+                        </div>
+                        <button class="new-game-btn" onclick="newGame()">🔄 ИГРАТЬ СНОВА</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            const loc = locations[gameState.location];
+            
+            // Атмосфера
+            let atmosphereHtml = '';
+            if (loc.atmosphere === 'hall') {
+                atmosphereHtml = '<div class="door door1"></div><div class="door door2"></div><div class="door door3"></div>';
+            } else if (loc.atmosphere === 'library') {
+                atmosphereHtml = '<div class="book book1"></div><div class="book book2"></div><div class="book book3"></div>';
+            } else if (loc.atmosphere === 'attic') {
+                atmosphereHtml = '<div class="mirror"></div><div class="shadow"></div>';
+                for (let i = 0; i < 3; i++) {
+                    atmosphereHtml += `<div class="dust" style="left: ${Math.random()*100}%; animation-delay: ${i*2}s"></div>`;
+                }
+            } else if (loc.atmosphere === 'dining_room') {
+                atmosphereHtml = '<div class="whisper">👤</div>';
+            } else if (loc.atmosphere === 'stairs') {
+                atmosphereHtml = '<div class="creak"></div>';
+            }
+            
+            let html = `
+                <div class="header">
+                    <h1>ЗАБРОШЕННЫЙ</h1>
+                    <h1>ОСОБНЯК</h1>
+                    <div class="location-badge">📍 ${loc.name}</div>
+                </div>
+                
+                <div class="location-card">
+                    <div class="atmosphere">${atmosphereHtml}</div>
+                    <div class="location-name">${loc.name}</div>
+                    <div class="location-desc">${loc.desc}</div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-item"><div class="stat-value">${gameState.health}</div><div class="stat-label">❤️ Здоровье</div></div>
+                    <div class="stat-item"><div class="stat-value">${gameState.sanity}</div><div class="stat-label">🧠 Рассудок</div></div>
+                    <div class="stat-item"><div class="stat-value">${gameState.inventory.length}</div><div class="stat-label">🎒 Предметы</div></div>
+                </div>
+            `;
+            
+            if (loc.items.length > 0) {
+                html += `
+                    <div class="items-section">
+                        <div class="items-list">
+                            ${loc.items.map(item => `<span class="item-chip">${item}</span>`).join('')}
+                        </div>
+                        <button class="take-btn" onclick="takeItem()">
+                            <span>🎒</span> ВЗЯТЬ ПРЕДМЕТ
+                        </button>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <button class="take-btn" disabled>
+                        <span>🚫</span> НЕТ ПРЕДМЕТОВ
+                    </button>
+                `;
+            }
+            
+            html += `<div class="actions">`;
+            loc.actions.forEach(action => {
+                html += `<button class="action-btn" onclick="doAction('${action.action}')">${action.text}</button>`;
+            });
+            html += `</div>`;
+            
+            if (gameState.inventory.length > 0) {
+                html += `
+                    <div class="inventory">
+                        <div class="inventory-title">🎒 ИНВЕНТАРЬ</div>
+                        <div class="inventory-items">
+                            ${gameState.inventory.map(id => 
+                                `<span class="inventory-item">${items[id]}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            app.innerHTML = html;
+        }
+
+        // Запуск
+        window.onload = () => {
+            setBackground(bgColors.start);
+            render();
+            
+            tg.MainButton.setText('💾 СОХРАНИТЬ');
+            tg.MainButton.onClick(() => {
+                tg.sendData(JSON.stringify(gameState));
+                showToast('💾 Сохранено!');
+            });
+            tg.MainButton.show();
+        };
+    </script>
+</body>
+</html>
