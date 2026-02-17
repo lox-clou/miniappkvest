@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Заброшенный особняк | Финальная версия</title>
+    <title>Заброшенный особняк | Ultimate Edition</title>
     
     <!-- Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -23,7 +23,6 @@
             overflow-x: hidden;
         }
 
-        /* Динамический фон */
         .dynamic-bg {
             position: fixed;
             top: 0;
@@ -35,7 +34,6 @@
             z-index: -3;
         }
 
-        /* Текстура */
         .texture {
             position: fixed;
             top: 0;
@@ -47,7 +45,6 @@
             z-index: -2;
         }
 
-        /* Частицы */
         .particles {
             position: fixed;
             top: 0;
@@ -72,7 +69,6 @@
             100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
         }
 
-        /* Туман */
         .fog {
             position: fixed;
             top: 0;
@@ -91,17 +87,120 @@
             100% { transform: scale(1.2) translate(-5%, -5%); }
         }
 
-        /* Основной контейнер */
         .app {
             max-width: 500px;
             margin: 0 auto;
-            padding: 16px 16px 80px;
+            padding: 16px;
             position: relative;
             z-index: 10;
             min-height: 100vh;
         }
 
-        /* Шапка */
+        /* Главное меню */
+        .menu {
+            background: rgba(20, 10, 8, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 2px solid rgba(180, 130, 70, 0.3);
+            margin: 20px 0;
+        }
+
+        .menu h1 {
+            font-size: 32px;
+            color: #e4c580;
+            text-shadow: 0 0 20px #b8860b;
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+        }
+
+        .menu-subtitle {
+            color: #b98a5f;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .menu-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4a3724, #2d1e14);
+            border: 2px solid #d4af37;
+            color: #ffecb3;
+            padding: 18px;
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 0 #3d2b1b;
+            transition: 0.1s;
+        }
+
+        .menu-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #3d2b1b;
+        }
+
+        .endings-list {
+            background: rgba(30, 15, 10, 0.8);
+            border-radius: 30px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .endings-title {
+            color: #d4af37;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .endings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .ending-item {
+            background: rgba(40, 20, 12, 0.8);
+            border: 1px solid #8b5a2b;
+            border-radius: 20px;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .ending-item.unlocked {
+            border-color: #ffd700;
+            background: rgba(80, 40, 20, 0.8);
+            box-shadow: 0 0 15px #b8860b;
+        }
+
+        .ending-item .emoji {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .ending-item .name {
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .ending-item .desc {
+            font-size: 10px;
+            color: #b98a5f;
+            margin-top: 4px;
+        }
+
         .header {
             background: rgba(20, 10, 8, 0.85);
             backdrop-filter: blur(20px);
@@ -129,9 +228,13 @@
             color: #d4af37;
             border: 1px solid rgba(180,130,70,0.3);
             margin-top: 8px;
+            cursor: pointer;
         }
 
-        /* Карточка локации */
+        .location-badge:hover {
+            background: rgba(50,30,20,0.6);
+        }
+
         .location-card {
             background: rgba(18, 10, 8, 0.8);
             backdrop-filter: blur(20px);
@@ -141,10 +244,9 @@
             border: 1px solid rgba(180, 130, 70, 0.2);
             position: relative;
             overflow: hidden;
-            min-height: 160px;
+            min-height: 180px;
         }
 
-        /* Атмосферные элементы */
         .atmosphere {
             position: absolute;
             top: 0;
@@ -287,7 +389,6 @@
             z-index: 1;
         }
 
-        /* Статистика */
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -316,34 +417,7 @@
             color: #b98a5f;
         }
 
-        /* Предметы */
-        .items-section {
-            background: rgba(18, 10, 8, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 28px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(180, 130, 70, 0.2);
-        }
-
-        .items-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .item-chip {
-            background: rgba(50, 30, 20, 0.9);
-            border: 1px solid #b8860b;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 14px;
-            color: #ffd700;
-        }
-
-        /* Кнопка взятия */
-        .take-btn {
+        .search-btn {
             width: 100%;
             background: linear-gradient(135deg, #4a3724, #2d1e14);
             border: 2px solid #d4af37;
@@ -353,27 +427,109 @@
             font-weight: 600;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.15s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             box-shadow: 0 5px 0 #3d2b1b;
+            transition: 0.15s;
+            margin-bottom: 16px;
         }
 
-        .take-btn:active {
+        .search-btn:active {
             transform: translateY(3px);
             box-shadow: 0 2px 0 #3d2b1b;
         }
 
-        .take-btn:disabled {
-            opacity: 0.5;
-            transform: none;
-            box-shadow: 0 4px 0 #3d2b1b;
-            cursor: not-allowed;
+        .found-items {
+            background: rgba(30, 15, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #b8860b;
+            display: none;
         }
 
-        /* Действия */
+        .found-items.visible {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .found-title {
+            color: #d4af37;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .found-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .found-item {
+            background: rgba(60, 35, 20, 0.9);
+            border: 1px solid #b8860b;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #ffd700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .found-item:hover {
+            background: rgba(80, 45, 25, 0.9);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #b8860b;
+        }
+
+        .found-item.taken {
+            opacity: 0.3;
+            pointer-events: none;
+            text-decoration: line-through;
+        }
+
+        .take-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #2d5a27, #1e3a1a);
+            border: 2px solid #ffd700;
+            color: white;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 0 #1e3a1a;
+            transition: 0.15s;
+            margin-bottom: 16px;
+        }
+
+        .take-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #1e3a1a;
+        }
+
+        .take-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -390,7 +546,7 @@
             border-radius: 24px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
             text-align: center;
         }
 
@@ -400,7 +556,6 @@
             color: #ffd700;
         }
 
-        /* Инвентарь */
         .inventory {
             background: rgba(18, 10, 8, 0.8);
             backdrop-filter: blur(10px);
@@ -413,6 +568,9 @@
             font-size: 16px;
             color: #e4c580;
             margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .inventory-items {
@@ -430,7 +588,40 @@
             color: #f5dcaa;
         }
 
-        /* Записка */
+        .menu-btn-small {
+            background: rgba(40, 20, 10, 0.8);
+            border: 1px solid #b8860b;
+            color: #d4af37;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .menu-btn-small:hover {
+            background: rgba(60, 30, 15, 0.9);
+        }
+
+        .secret-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(180, 130, 70, 0.2);
+            border: 1px solid #b8860b;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 11px;
+            color: #d4af37;
+            z-index: 2;
+            animation: secretPulse 3s infinite alternate;
+        }
+
+        @keyframes secretPulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; text-shadow: 0 0 10px #b8860b; }
+        }
+
         .note-popup {
             position: fixed;
             top: 50%;
@@ -475,7 +666,6 @@
             background: #5a3e2e;
         }
 
-        /* Уведомление */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -499,7 +689,6 @@
             to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
 
-        /* Концовка */
         .ending {
             background: rgba(15, 8, 5, 0.95);
             backdrop-filter: blur(20px);
@@ -511,43 +700,51 @@
         }
 
         .ending-title {
-            font-size: 32px;
+            font-size: 36px;
             margin-bottom: 20px;
         }
 
-        .ending-bad { color: #b34a4a; }
-        .ending-good { color: #ffd966; }
-        .ending-neutral { color: #b98a5f; }
-        .ending-secret { color: #b584b5; }
+        .ending-bad { color: #b34a4a; text-shadow: 0 0 30px #ff4444; }
+        .ending-good { color: #ffd966; text-shadow: 0 0 30px #ffaa00; }
+        .ending-neutral { color: #b98a5f; text-shadow: 0 0 30px #b8860b; }
+        .ending-secret { color: #b584b5; text-shadow: 0 0 30px #9932cc; }
 
         .ending-desc {
-            font-size: 16px;
-            line-height: 1.7;
-            margin-bottom: 25px;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
             padding: 20px;
             background: rgba(0,0,0,0.3);
             border-radius: 20px;
         }
 
-        .new-game-btn {
+        .ending-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .ending-btn {
             background: linear-gradient(135deg, #4a3724, #2d1e14);
             border: 2px solid #d4af37;
             color: #ffecb3;
-            padding: 15px 40px;
-            font-size: 18px;
+            padding: 15px 25px;
+            font-size: 16px;
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 5px 0 #3d2b1b;
+            flex: 1;
         }
 
-        .new-game-btn:active {
+        .ending-btn:active {
             transform: translateY(3px);
             box-shadow: 0 2px 0 #3d2b1b;
         }
 
-        @media (max-width: 380px) {
+        @media (max-width: 480px) {
             .actions { grid-template-columns: 1fr; }
-            .stat-value { font-size: 24px; }
+            .endings-grid { grid-template-columns: 1fr; }
+            .ending-buttons { flex-direction: column; }
         }
     </style>
 </head>
@@ -564,186 +761,553 @@
         tg.expand();
         tg.ready();
 
-        // Частицы
+        // Статистика концовок
+        let endingsUnlocked = JSON.parse(localStorage.getItem('endingsUnlocked')) || [];
+
         function initParticles() {
             const container = document.getElementById('particles');
             container.innerHTML = '';
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 20; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
                 p.style.left = Math.random() * 100 + '%';
                 p.style.animationDuration = (Math.random() * 15 + 10) + 's';
                 p.style.animationDelay = Math.random() * 10 + 's';
-                p.style.width = (Math.random() * 4 + 1) + 'px';
+                p.style.width = (Math.random() * 5 + 1) + 'px';
                 p.style.height = p.style.width;
                 container.appendChild(p);
             }
         }
         initParticles();
 
-        // Состояние игры
         let gameState = {
             location: 'start',
             inventory: [],
+            foundItems: [],
             health: 100,
             sanity: 100,
             flags: {},
-            ending: null
+            searched: false,
+            ending: null,
+            inMenu: true,
+            secretRoomsFound: []
         };
 
-        // Цвета фона
+        // Цвета фона для каждой локации
         const bgColors = {
             start: 'radial-gradient(circle at 30% 30%, #2c1a1a, #0a0303)',
             hall: 'radial-gradient(circle at 70% 20%, #2a1515, #080303)',
+            kitchen: 'radial-gradient(circle at 50% 50%, #3d2a1a, #150a05)',
             living_room: 'radial-gradient(circle at 50% 50%, #3d2a1a, #150a05)',
-            library: 'radial-gradient(circle at 30% 70%, #2a1f2a, #0f0a0f)',
             dining_room: 'radial-gradient(circle at 80% 40%, #3d2a1a, #1a0d05)',
-            stairs: 'radial-gradient(circle at 50% 30%, #2a1f1a, #0f0a05)',
-            second_floor: 'radial-gradient(circle at 20% 60%, #2a1a1a, #0f0808)',
+            library: 'radial-gradient(circle at 30% 70%, #2a1f2a, #0f0a0f)',
+            bedroom: 'radial-gradient(circle at 60% 30%, #2a1a1a, #0f0808)',
+            nursery: 'radial-gradient(circle at 40% 60%, #2a1a2a, #0f080f)',
+            study: 'radial-gradient(circle at 50% 50%, #2a2a1a, #0f0f08)',
+            bathroom: 'radial-gradient(circle at 30% 50%, #1f2a2a, #0a0f0f)',
+            closet: 'radial-gradient(circle at 70% 30%, #2a1a1f, #0f080a)',
             attic: 'radial-gradient(circle at 60% 50%, #2a1a1f, #0f080a)',
-            basement: 'radial-gradient(circle at 40% 60%, #1f0f0f, #080303)'
+            basement: 'radial-gradient(circle at 40% 60%, #1f0f0f, #080303)',
+            crypt: 'radial-gradient(circle at 50% 50%, #1f0f1f, #080308)',
+            dungeon: 'radial-gradient(circle at 30% 70%, #0f0f0f, #030303)',
+            // Секретные комнаты
+            secret_library: 'radial-gradient(circle at 50% 50%, #2a1a2a, #1f0a1f)',
+            hidden_chamber: 'radial-gradient(circle at 30% 60%, #1f1f2a, #0f0f1a)',
+            ritual_room: 'radial-gradient(circle at 70% 40%, #2a1a1a, #1f0a0a)',
+            treasure_vault: 'radial-gradient(circle at 50% 50%, #2a2a1a, #1f1f0a)',
+            observatory: 'radial-gradient(circle at 30% 30%, #1f2a2a, #0f1a1a)'
         };
 
-        // Локации
+        // ВСЕ ПРЕДМЕТЫ
+        const allItems = [
+            { id: 'flashlight', name: '🔦 Фонарик', desc: 'Освещает путь', type: 'common' },
+            { id: 'matches', name: '🪔 Спички', desc: 'Можно зажечь свечу', type: 'common' },
+            { id: 'key', name: '🗝️ Ключ', desc: 'Открывает двери', type: 'key_item' },
+            { id: 'note1', name: '📜 Старая записка', desc: '"Не верь теням"', type: 'common' },
+            { id: 'note2', name: '📜 Пожелтевшая записка', desc: '"Они повсюду"', type: 'common' },
+            { id: 'diary', name: '📔 Дневник', desc: 'Чьи-то записи', type: 'common' },
+            { id: 'clock', name: '⏰ Часы', desc: 'Остановились на 3:33', type: 'common' },
+            { id: 'book1', name: '📖 Старая книга', desc: 'Пыльный фолиант', type: 'key_item' },
+            { id: 'book2', name: '📖 Гримуар', desc: 'Книга заклинаний', type: 'key_item' },
+            { id: 'glasses', name: '👓 Очки', desc: 'Видят скрытое', type: 'key_item' },
+            { id: 'silver', name: '🔪 Серебряный нож', desc: 'Против нечисти', type: 'key_item' },
+            { id: 'candle', name: '🕯️ Свеча', desc: 'Дает свет', type: 'common' },
+            { id: 'chest', name: '⚰️ Сундук', desc: 'Старый сундук', type: 'key_item' },
+            { id: 'ring', name: '💍 Кольцо', desc: 'Проклятое кольцо', type: 'key_item' },
+            { id: 'knife', name: '🔪 Ритуальный нож', desc: 'Для обрядов', type: 'key_item' },
+            { id: 'amulet', name: '📿 Амулет', desc: 'Защищает от зла', type: 'common' },
+            { id: 'skull', name: '💀 Череп', desc: 'Старый череп', type: 'common' },
+            { id: 'potion', name: '🧪 Зелье', desc: 'Таинственная жидкость', type: 'common' },
+            { id: 'scroll', name: '📜 Свиток', desc: 'Древнее заклинание', type: 'common' },
+            { id: 'mask', name: '🎭 Маска', desc: 'Ритуальная маска', type: 'key_item' },
+            { id: 'bell', name: '🔔 Колокольчик', desc: 'Старый колокольчик', type: 'common' },
+            { id: 'feather', name: '🪶 Перо', desc: 'Черное перо', type: 'common' },
+            { id: 'crystal', name: '🔮 Кристалл', desc: 'Магический кристалл', type: 'key_item' },
+            { id: 'tarot', name: '🎴 Карта Таро', desc: 'Судьба', type: 'common' },
+            { id: 'hourglass', name: '⏳ Песочные часы', desc: 'Песок не движется', type: 'common' },
+            { id: 'mirror_shard', name: '🪞 Осколок зеркала', desc: 'Осколок зеркала', type: 'common' },
+            { id: 'crown', name: '👑 Корона', desc: 'Старая корона', type: 'key_item' },
+            { id: 'locket', name: '📿 Медальон', desc: 'С фотографией', type: 'common' },
+            { id: 'spyglass', name: '🔭 Подзорная труба', desc: 'Видно далеко', type: 'common' },
+            { id: 'compass', name: '🧭 Компас', desc: 'Показывает выход', type: 'common' }
+        ];
+
+        // Ключевые предметы (для концовок)
+        const keyItems = allItems.filter(item => item.type === 'key_item').map(item => item.id);
+
+        // Обычные комнаты
+        const regularRooms = [
+            'hall', 'kitchen', 'living_room', 'dining_room', 
+            'library', 'bedroom', 'nursery', 'study', 'bathroom', 'closet',
+            'attic', 'basement', 'crypt', 'dungeon'
+        ];
+
+        // Секретные комнаты (доступны только при выполнении условий)
+        const secretRooms = {
+            secret_library: {
+                name: '🔮 ТАЙНАЯ БИБЛИОТЕКА',
+                desc: 'Потайная комната за книжным шкафом. Здесь хранятся самые опасные знания.',
+                bg: 'secret_library',
+                items: [{ id: 'book2', name: '📖 Гримуар', desc: 'Книга заклинаний', type: 'key_item' }],
+                atmosphere: 'library',
+                requiredItem: 'book1',
+                requiredAction: 'search',
+                entryLocation: 'library',
+                actions: [
+                    { text: '📖 Осмотреть', action: 'search' },
+                    { text: '🚪 Выйти', action: 'library' }
+                ]
+            },
+            hidden_chamber: {
+                name: '🗝️ ПОТАЙНАЯ КОМНАТА',
+                desc: 'Тайник за картиной. Здесь кто-то прятал ценные вещи.',
+                bg: 'hidden_chamber',
+                items: [{ id: 'crown', name: '👑 Корона', desc: 'Старая корона', type: 'key_item' }],
+                atmosphere: 'hidden_chamber',
+                requiredItem: 'key',
+                requiredAction: 'search',
+                entryLocation: 'living_room',
+                actions: [
+                    { text: '🔍 Осмотреть', action: 'search' },
+                    { text: '🚪 Выйти', action: 'living_room' }
+                ]
+            },
+            ritual_room: {
+                name: '🕯️ РИТУАЛЬНЫЙ ЗАЛ',
+                desc: 'Место проведения темных обрядов. Свечи все еще горят.',
+                bg: 'ritual_room',
+                items: [{ id: 'mask', name: '🎭 Маска', desc: 'Ритуальная маска', type: 'key_item' }],
+                atmosphere: 'ritual_room',
+                requiredItem: 'knife',
+                requiredAction: 'ritual',
+                entryLocation: 'basement',
+                actions: [
+                    { text: '🔍 Осмотреть', action: 'search' },
+                    { text: '🕯️ Ритуал', action: 'ritual' },
+                    { text: '🚪 Выйти', action: 'basement' }
+                ]
+            },
+            treasure_vault: {
+                name: '💰 СОКРОВИЩНИЦА',
+                desc: 'Старое хранилище. Здесь должны быть ценности...',
+                bg: 'treasure_vault',
+                items: [{ id: 'chest', name: '⚰️ Сундук', desc: 'Старый сундук', type: 'key_item' }],
+                atmosphere: 'treasure_vault',
+                requiredItem: 'key',
+                requiredAction: 'search',
+                entryLocation: 'basement',
+                actions: [
+                    { text: '🔍 Осмотреть', action: 'search' },
+                    { text: '🚪 Выйти', action: 'basement' }
+                ]
+            },
+            observatory: {
+                name: '🔭 ОБСЕРВАТОРИЯ',
+                desc: 'Самая высокая точка особняка. В телескоп видно звезды... и что-то еще.',
+                bg: 'observatory',
+                items: [{ id: 'crystal', name: '🔮 Кристалл', desc: 'Магический кристалл', type: 'key_item' }],
+                atmosphere: 'observatory',
+                requiredItem: 'spyglass',
+                requiredAction: 'search',
+                entryLocation: 'attic',
+                actions: [
+                    { text: '🔭 Телескоп', action: 'search' },
+                    { text: '🚪 Выйти', action: 'attic' }
+                ]
+            }
+        };
+
+        // Локации с описаниями
         const locations = {
             start: {
                 name: 'ЗАБРОШЕННЫЙ ОСОБНЯК',
                 desc: 'Ты стоишь перед старым особняком. Дверь приоткрыта, изнутри доносится странный звук.',
                 bg: 'start',
-                items: ['🔦 Фонарик', '🪔 Спички'],
-                itemsIds: ['flashlight', 'matches'],
+                items: [],
                 atmosphere: 'start',
                 actions: [
                     { text: '🚪 Войти', action: 'hall' },
-                    { text: '👀 Осмотреться', action: 'search' },
                     { text: '📞 Позвонить', action: 'call' },
                     { text: '🚗 Уехать', action: 'escape' }
                 ]
             },
             hall: {
                 name: 'ГЛАВНЫЙ ХОЛЛ',
-                desc: 'Огромный холл с портретами на стенах. Три двери ведут в разные комнаты.',
+                desc: 'Огромный холл с портретами на стенах. Лестница ведет наверх.',
                 bg: 'hall',
-                items: ['🗝️ Ключ', '📜 Записка'],
-                itemsIds: ['key', 'note'],
+                items: [],
                 atmosphere: 'hall',
                 actions: [
+                    { text: '🚪 Кухня', action: 'kitchen' },
                     { text: '🚪 Гостиная', action: 'living_room' },
-                    { text: '📚 Библиотека', action: 'library' },
-                    { text: '🍽️ Столовая', action: 'dining_room' },
-                    { text: '⬆️ Лестница', action: 'stairs' }
+                    { text: '🚪 Столовая', action: 'dining_room' },
+                    { text: '⬆️ Библиотека', action: 'library' },
+                    { text: '⬇️ Подвал', action: 'basement' }
+                ]
+            },
+            kitchen: {
+                name: 'КУХНЯ',
+                desc: 'Старая кухня с ржавыми кастрюлями. Пахнет гнилью.',
+                bg: 'kitchen',
+                items: [],
+                atmosphere: 'kitchen',
+                actions: [
+                    { text: '🔍 Осмотреть', action: 'search' },
+                    { text: '🚪 В холл', action: 'hall' }
                 ]
             },
             living_room: {
                 name: 'ГОСТИНАЯ',
                 desc: 'Уютная когда-то комната. Камин давно погас, на полу валяются старые фотографии.',
                 bg: 'living_room',
-                items: ['📔 Дневник', '⏰ Часы'],
-                itemsIds: ['diary', 'clock'],
+                items: [],
                 atmosphere: 'living_room',
                 actions: [
                     { text: '🔥 Камин', action: 'search' },
-                    { text: '📸 Фото', action: 'search' },
-                    { text: '🔍 Обыскать', action: 'search' },
-                    { text: '🚪 Назад', action: 'hall' }
-                ]
-            },
-            library: {
-                name: 'БИБЛИОТЕКА',
-                desc: 'Тысячи книг. Одна из них светится в темноте.',
-                bg: 'library',
-                items: ['📖 Книга', '👓 Очки'],
-                itemsIds: ['book', 'glasses'],
-                atmosphere: 'library',
-                actions: [
-                    { text: '📖 Взять книгу', action: 'takeBook' },
-                    { text: '🔍 Тайник', action: 'search' },
-                    { text: '🪑 Стол', action: 'search' },
-                    { text: '🚪 Назад', action: 'hall' }
+                    { text: '🖼️ Картины', action: 'search' },
+                    { text: '🚪 В холл', action: 'hall' }
                 ]
             },
             dining_room: {
                 name: 'СТОЛОВАЯ',
                 desc: 'Длинный стол накрыт для ужина. Из темноты доносится шепот.',
                 bg: 'dining_room',
-                items: ['🔪 Серебро', '🕯️ Свеча'],
-                itemsIds: ['silver', 'candle'],
+                items: [],
                 atmosphere: 'dining_room',
                 actions: [
-                    { text: '🕯️ Зажечь', action: 'lightCandle' },
                     { text: '👂 Шепот', action: 'listen' },
-                    { text: '🔍 Обыскать', action: 'search' },
-                    { text: '🚪 Назад', action: 'hall' }
+                    { text: '🍽️ Стол', action: 'search' },
+                    { text: '🚪 В холл', action: 'hall' }
                 ]
             },
-            stairs: {
-                name: 'ЛЕСТНИЦА',
-                desc: 'Старая лестница скрипит. Наверху кто-то ходит.',
-                bg: 'stairs',
+            library: {
+                name: 'БИБЛИОТЕКА',
+                desc: 'Тысячи книг. Одна из них светится в темноте.',
+                bg: 'library',
                 items: [],
-                itemsIds: [],
-                atmosphere: 'stairs',
+                atmosphere: 'library',
                 actions: [
-                    { text: '⬆️ Наверх', action: 'second_floor' },
-                    { text: '🔦 Фонарик', action: 'flashlight' },
-                    { text: '⬇️ Вниз', action: 'hall' },
-                    { text: '🕵️ Осмотреть', action: 'search' }
-                ]
-            },
-            second_floor: {
-                name: 'ВТОРОЙ ЭТАЖ',
-                desc: 'Коридор с дверями. Из-под одной двери пробивается свет.',
-                bg: 'second_floor',
-                items: [],
-                itemsIds: [],
-                atmosphere: 'second_floor',
-                actions: [
-                    { text: '🚪 Постучать', action: 'knock' },
-                    { text: '🔍 Двери', action: 'checkDoors' },
+                    { text: '📖 Книги', action: 'search' },
+                    { text: '🪑 Стол', action: 'search' },
+                    { text: '⬇️ В холл', action: 'hall' },
                     { text: '⬆️ Чердак', action: 'attic' },
-                    { text: '⬇️ Вниз', action: 'stairs' }
+                    { text: '🔍 Осмотреть шкафы', action: 'search_secret' }
+                ]
+            },
+            bedroom: {
+                name: 'СПАЛЬНЯ',
+                desc: 'Большая кровать с балдахином. Пыльно, но чувствуется чье-то присутствие.',
+                bg: 'bedroom',
+                items: [],
+                atmosphere: 'bedroom',
+                actions: [
+                    { text: '🛏️ Кровать', action: 'search' },
+                    { text: '🚪 В библиотеку', action: 'library' }
+                ]
+            },
+            nursery: {
+                name: 'ДЕТСКАЯ',
+                desc: 'Старые игрушки. Слышен детский смех...',
+                bg: 'nursery',
+                items: [],
+                atmosphere: 'nursery',
+                actions: [
+                    { text: '🧸 Игрушки', action: 'search' },
+                    { text: '🚪 В библиотеку', action: 'library' }
+                ]
+            },
+            study: {
+                name: 'КАБИНЕТ',
+                desc: 'Письменный стол, книги, карты. Кто-то здесь работал.',
+                bg: 'study',
+                items: [],
+                atmosphere: 'study',
+                actions: [
+                    { text: '📚 Стол', action: 'search' },
+                    { text: '🗺️ Карты', action: 'search' },
+                    { text: '🚪 В библиотеку', action: 'library' }
+                ]
+            },
+            bathroom: {
+                name: 'ВАННАЯ',
+                desc: 'Старая ванна. Из крана капает вода... хотя воды быть не должно.',
+                bg: 'bathroom',
+                items: [],
+                atmosphere: 'bathroom',
+                actions: [
+                    { text: '🚰 Кран', action: 'search' },
+                    { text: '🪞 Зеркало', action: 'mirror' },
+                    { text: '🚪 В библиотеку', action: 'library' }
+                ]
+            },
+            closet: {
+                name: 'ЧУЛАН',
+                desc: 'Маленькая темная комната. Вещи свалены в кучу.',
+                bg: 'closet',
+                items: [],
+                atmosphere: 'closet',
+                actions: [
+                    { text: '📦 Вещи', action: 'search' },
+                    { text: '🚪 В библиотеку', action: 'library' }
                 ]
             },
             attic: {
                 name: 'ЧЕРДАК',
                 desc: 'Пыльно. В углу стоит старое зеркало. В отражении кто-то есть...',
                 bg: 'attic',
-                items: ['⚰️ Сундук', '💍 Кольцо'],
-                itemsIds: ['chest', 'ring'],
+                items: [],
                 atmosphere: 'attic',
                 actions: [
                     { text: '🪞 Зеркало', action: 'mirror' },
-                    { text: '📦 Сундук', action: 'chest' },
-                    { text: '🔍 Коробки', action: 'search' },
-                    { text: '⬇️ Вниз', action: 'second_floor' }
+                    { text: '📦 Коробки', action: 'search' },
+                    { text: '⬇️ В библиотеку', action: 'library' }
+                ]
+            },
+            basement: {
+                name: 'ПОДВАЛ',
+                desc: 'Темно и сыро. На стенах странные символы.',
+                bg: 'basement',
+                items: [],
+                atmosphere: 'basement',
+                actions: [
+                    { text: '🔦 Обыскать', action: 'search' },
+                    { text: '🚪 В склеп', action: 'crypt' },
+                    { text: '⬆️ Наверх', action: 'hall' },
+                    { text: '🕯️ Ритуал', action: 'ritual' }
+                ]
+            },
+            crypt: {
+                name: 'СКЛЕП',
+                desc: 'Каменные гробы. Холод пробирает до костей.',
+                bg: 'crypt',
+                items: [],
+                atmosphere: 'crypt',
+                actions: [
+                    { text: '⚰️ Гробы', action: 'search' },
+                    { text: '🚪 В подвал', action: 'basement' },
+                    { text: '🚪 В темницу', action: 'dungeon' }
+                ]
+            },
+            dungeon: {
+                name: 'ТЕМНИЦА',
+                desc: 'Ржавые цепи на стенах. Кто-то здесь был заточен.',
+                bg: 'dungeon',
+                items: [],
+                atmosphere: 'dungeon',
+                actions: [
+                    { text: '⛓️ Осмотреть', action: 'search' },
+                    { text: '🚪 В склеп', action: 'crypt' }
                 ]
             }
         };
 
-        // Предметы
-        const items = {
-            flashlight: '🔦 Фонарик',
-            matches: '🪔 Спички',
-            key: '🗝️ Ключ',
-            note: '📜 Записка',
-            diary: '📔 Дневник',
-            clock: '⏰ Часы',
-            book: '📖 Книга',
-            glasses: '👓 Очки',
-            silver: '🔪 Серебро',
-            candle: '🕯️ Свеча',
-            chest: '⚰️ Сундук',
-            ring: '💍 Кольцо'
-        };
+        // Рандомный спавн предметов (только в обычных комнатах, 60% вероятность)
+        function randomizeItems() {
+            // Перемешиваем все предметы
+            const shuffled = [...allItems].sort(() => Math.random() - 0.5);
+            
+            // Сначала выделяем ключевые предметы для секретных комнат
+            const keyForSecret = ['book2', 'crown', 'mask', 'chest', 'crystal'];
+            const remainingItems = shuffled.filter(item => !keyForSecret.includes(item.id));
+            
+            // Распределяем оставшиеся предметы по обычным комнатам
+            const itemsPerRoom = {};
+            regularRooms.forEach(room => {
+                itemsPerRoom[room] = [];
+            });
+            
+            // 60% комнат получают предметы
+            const roomsWithItems = Math.floor(regularRooms.length * 0.6);
+            const shuffledRooms = [...regularRooms].sort(() => Math.random() - 0.5);
+            const selectedRooms = shuffledRooms.slice(0, roomsWithItems);
+            
+            let itemIndex = 0;
+            for (let room of selectedRooms) {
+                // 1-2 предмета на комнату
+                const itemCount = Math.random() > 0.5 ? 1 : 2;
+                for (let i = 0; i < itemCount; i++) {
+                    if (itemIndex < remainingItems.length) {
+                        itemsPerRoom[room].push({...remainingItems[itemIndex]});
+                        itemIndex++;
+                    }
+                }
+            }
+            
+            return itemsPerRoom;
+        }
 
         // Концовки
         const endings = {
-            death: { name: '💀 СМЕРТЬ', desc: 'Ты погиб в стенах этого проклятого особняка...', type: 'bad' },
-            madness: { name: '🧠 БЕЗУМИЕ', desc: 'Твой разум не выдержал ужасов этого места.', type: 'bad' },
-            escape: { name: '🏃 ПОБЕГ', desc: 'Ты вырвался из особняка! Но часть тебя навсегда осталась там.', type: 'neutral' },
-            treasure: { name: '💰 СОКРОВИЩА', desc: 'Ты нашел сокровища! Но проклятие следует за тобой.', type: 'good' },
-            ghost: { name: '👻 ПРИЗРАК', desc: 'Твой дух остался в особняке навечно...', type: 'secret' }
+            death: { 
+                name: '💀 СМЕРТЬ', 
+                desc: 'Ты погиб в стенах этого проклятого особняка...', 
+                type: 'bad',
+                emoji: '💀',
+                check: (state) => state.health <= 0
+            },
+            madness: { 
+                name: '🧠 БЕЗУМИЕ', 
+                desc: 'Твой разум не выдержал ужасов этого места.', 
+                type: 'bad',
+                emoji: '🧠',
+                check: (state) => state.sanity <= 0
+            },
+            escape: { 
+                name: '🏃 ПОБЕГ', 
+                desc: 'Ты вырвался из особняка! Но часть тебя навсегда осталась там.', 
+                type: 'neutral',
+                emoji: '🏃',
+                check: (state) => state.flags.escape === true
+            },
+            treasure: { 
+                name: '💰 СОКРОВИЩА', 
+                desc: 'Ты нашел сокровища! Проклятое кольцо теперь твое.', 
+                type: 'good',
+                emoji: '💰',
+                check: (state) => state.inventory.includes('ring') && state.inventory.includes('chest') && state.flags.chest_opened === true
+            },
+            truth: { 
+                name: '🔍 ПРАВДА', 
+                desc: 'Ты узнал тайну особняка! Очки позволили тебе увидеть правду.', 
+                type: 'good',
+                emoji: '🔍',
+                check: (state) => state.inventory.includes('glasses') && state.inventory.includes('book1') && state.flags.truth_seen === true
+            },
+            hero: { 
+                name: '🦸 ГЕРОЙ', 
+                desc: 'Ты спас всех запертых здесь душ! Ритуал освобождения завершен.', 
+                type: 'good',
+                emoji: '🦸',
+                check: (state) => state.inventory.includes('silver') && state.inventory.includes('knife') && state.flags.ritual_completed === true
+            },
+            ghost: { 
+                name: '👻 ПРИЗРАК', 
+                desc: 'Твой дух остался в особняке навечно...', 
+                type: 'secret',
+                emoji: '👻',
+                check: (state) => state.health <= 0 && state.sanity > 50 && state.inventory.includes('ring') && state.flags.mirror_seen === true
+            },
+            master: { 
+                name: '👑 ХОЗЯИН', 
+                desc: 'Ты стал новым хозяином особняка! Книга и кольцо дали тебе власть.', 
+                type: 'secret',
+                emoji: '👑',
+                check: (state) => state.inventory.includes('book2') && state.inventory.includes('ring') && state.inventory.includes('crown') && state.flags.master_ritual === true
+            },
+            sacrifice: { 
+                name: '🩸 ЖЕРТВА', 
+                desc: 'Ты принес себя в жертву ради спасения других душ.', 
+                type: 'bad',
+                emoji: '🩸',
+                check: (state) => state.health < 20 && state.inventory.includes('knife') && state.flags.sacrifice === true
+            },
+            time: { 
+                name: '⏳ ВРЕМЯ', 
+                desc: 'Ты застрял во временной петле. Теперь ты будешь вечно бродить здесь.', 
+                type: 'neutral',
+                emoji: '⏳',
+                check: (state) => state.inventory.includes('hourglass') && state.flags.mirror_seen === true && state.location === 'attic'
+            },
+            fortune: { 
+                name: '🎴 СУДЬБА', 
+                desc: 'Карты Таро предсказали твою судьбу. Ты принял свою участь.', 
+                type: 'neutral',
+                emoji: '🎴',
+                check: (state) => state.inventory.includes('tarot') && state.sanity < 30 && state.flags.tarot_read === true
+            },
+            mage: { 
+                name: '🔮 МАГ', 
+                desc: 'Ты овладел древней магией. Теперь ты настоящий маг.', 
+                type: 'good',
+                emoji: '🔮',
+                check: (state) => state.inventory.includes('crystal') && state.inventory.includes('scroll') && state.inventory.includes('book1') && state.flags.spell_cast === true
+            },
+            cursed: { 
+                name: '⚰️ ПРОКЛЯТИЕ', 
+                desc: 'Проклятие настигло тебя. Ты стал частью особняка.', 
+                type: 'bad',
+                emoji: '⚰️',
+                check: (state) => state.inventory.includes('skull') && state.inventory.includes('ring') && state.sanity < 40 && state.flags.cursed_ritual === true
+            },
+            light: { 
+                name: '✨ СВЕТ', 
+                desc: 'Ты нашел источник света и изгнал тьму из особняка.', 
+                type: 'good',
+                emoji: '✨',
+                check: (state) => state.inventory.includes('candle') && state.inventory.includes('matches') && state.flags.light_ritual === true
+            },
+            shadow: { 
+                name: '🌑 ТЕНЬ', 
+                desc: 'Ты слился с тенями. Теперь ты невидим для призраков.', 
+                type: 'secret',
+                emoji: '🌑',
+                check: (state) => state.inventory.includes('feather') && state.sanity > 80 && state.flags.shadow_merge === true
+            },
+            alchemist: { 
+                name: '⚗️ АЛХИМИК', 
+                desc: 'Ты создал эликсир бессмертия! Но цена была высока...', 
+                type: 'good',
+                emoji: '⚗️',
+                check: (state) => state.inventory.includes('potion') && state.inventory.includes('crystal') && state.health > 90 && state.flags.alchemy === true
+            },
+            broken: { 
+                name: '🪞 ОСКОЛКИ', 
+                desc: 'Разбитое зеркало показало тебе все твои страхи.', 
+                type: 'bad',
+                emoji: '🪞',
+                check: (state) => state.inventory.includes('mirror_shard') && state.sanity < 20 && state.flags.mirror_broken === true
+            },
+            king: { 
+                name: '👑 КОРОЛЬ', 
+                desc: 'Корона дает тебе власть над всеми духами особняка.', 
+                type: 'secret',
+                emoji: '👑',
+                check: (state) => state.inventory.includes('crown') && state.inventory.includes('ring') && state.inventory.includes('book2') && state.flags.coronation === true
+            },
+            ritual: { 
+                name: '🕯️ РИТУАЛ', 
+                desc: 'Древний ритуал завершен. Ты открыл портал в другой мир.', 
+                type: 'secret',
+                emoji: '🕯️',
+                check: (state) => state.inventory.includes('candle') && state.inventory.includes('knife') && state.inventory.includes('mask') && state.flags.portal_opened === true
+            },
+            wanderer: { 
+                name: '🚶 СТРАННИК', 
+                desc: 'Ты решил остаться и присматривать за особняком.', 
+                type: 'neutral',
+                emoji: '🚶',
+                check: (state) => state.inventory.length > 10 && state.sanity > 70 && state.health > 70 && state.flags.wanderer_choice === true
+            },
+            astronomer: {
+                name: '🔭 АСТРОНОМ',
+                desc: 'Ты увидел в телескоп другие миры. Тайны вселенной открылись тебе.',
+                type: 'good',
+                emoji: '🔭',
+                check: (state) => state.inventory.includes('spyglass') && state.location === 'observatory' && state.flags.stars_seen === true
+            }
         };
+
+        let itemsByLocation = randomizeItems();
 
         function setBackground(bgKey) {
             document.getElementById('dynamicBg').style.background = bgColors[bgKey] || bgColors.start;
@@ -767,67 +1331,221 @@
             document.body.appendChild(note);
         }
 
-        function takeItem() {
-            const loc = locations[gameState.location];
+        function checkAllEndings() {
+            for (let [key, ending] of Object.entries(endings)) {
+                if (ending.check(gameState)) {
+                    if (!endingsUnlocked.includes(key)) {
+                        endingsUnlocked.push(key);
+                        localStorage.setItem('endingsUnlocked', JSON.stringify(endingsUnlocked));
+                        
+                        if (tg) {
+                            tg.sendData(JSON.stringify({
+                                type: 'ending_unlocked',
+                                ending: key,
+                                endings: endingsUnlocked
+                            }));
+                        }
+                    }
+                    gameState.ending = key;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function searchRoom() {
+            // Определяем текущую локацию (может быть обычной или секретной)
+            const loc = locations[gameState.location] || secretRooms[gameState.location];
+            if (!loc) return;
             
-            if (loc.itemsIds && loc.itemsIds.length > 0) {
-                const itemId = loc.itemsIds[0];
+            if (loc.items && loc.items.length > 0) {
+                const newItems = loc.items.filter(item => 
+                    !gameState.foundItems.some(f => f.id === item.id)
+                );
                 
-                if (!gameState.inventory.includes(itemId)) {
-                    gameState.inventory.push(itemId);
-                    
-                    showToast(`✅ Взят: ${items[itemId]}`);
-                    
-                    if (itemId === 'note') {
-                        showNote('"Не верь теням, они повсюду..."');
-                        gameState.sanity -= 5;
-                    }
-                    if (itemId === 'book') {
-                        showNote('"Тьма внутри тебя..."');
-                        gameState.sanity -= 5;
-                    }
-                    if (itemId === 'ring') {
-                        showNote('Кольцо обжигает палец...');
-                        gameState.sanity -= 10;
-                    }
-                    
-                    loc.items.shift();
-                    loc.itemsIds.shift();
-                    
-                    render();
+                if (newItems.length > 0) {
+                    gameState.foundItems = [...gameState.foundItems, ...newItems];
+                    showToast('🔍 Ты что-то нашел!');
+                } else {
+                    showToast('🔍 Больше ничего нет...');
                 }
             } else {
-                showToast('❌ Здесь нет предметов');
+                showToast('🔍 Здесь пусто...');
             }
+            
+            gameState.searched = true;
+            render();
+        }
+
+        function takeItem(itemId) {
+            if (!gameState.foundItems.some(f => f.id === itemId)) return;
+            
+            const item = gameState.foundItems.find(f => f.id === itemId);
+            gameState.foundItems = gameState.foundItems.filter(f => f.id !== itemId);
+            gameState.inventory.push(itemId);
+            
+            // Удаляем предмет из текущей локации
+            const loc = locations[gameState.location] || secretRooms[gameState.location];
+            if (loc) {
+                const itemIndex = loc.items.findIndex(i => i.id === itemId);
+                if (itemIndex !== -1) {
+                    loc.items.splice(itemIndex, 1);
+                }
+            }
+            
+            showToast(`✅ Взят: ${item.name}`);
+            
+            if (itemId.includes('note')) {
+                showNote('"Тени повсюду... они следят за тобой..."');
+                gameState.sanity -= 3;
+            }
+            if (itemId.includes('book')) {
+                showNote('"Тьма внутри тебя становится сильнее..."');
+                gameState.sanity -= 5;
+            }
+            if (itemId === 'ring') {
+                showNote('Кольцо обжигает палец холодом...');
+                gameState.sanity -= 8;
+            }
+            
+            render();
         }
 
         function doAction(actionCode) {
             if (gameState.ending) return;
             
-            const loc = locations[gameState.location];
+            // Проверяем, находимся ли мы в секретной комнате или обычной
+            const loc = locations[gameState.location] || secretRooms[gameState.location];
+            if (!loc) return;
             
-            // Перемещение
+            // Проверка на открытие секретных комнат
+            if (actionCode === 'search_secret' && gameState.location === 'library') {
+                if (gameState.inventory.includes('book1') && !gameState.secretRoomsFound.includes('secret_library')) {
+                    gameState.location = 'secret_library';
+                    gameState.secretRoomsFound.push('secret_library');
+                    gameState.searched = false;
+                    gameState.foundItems = [];
+                    setBackground(bgColors.secret_library);
+                    showToast('🔓 Книжный шкаф открывается!');
+                    render();
+                    return;
+                }
+            }
+            
+            // Проверка на потайную комнату в гостиной
+            if (actionCode === 'search' && gameState.location === 'living_room') {
+                if (gameState.inventory.includes('key') && !gameState.secretRoomsFound.includes('hidden_chamber')) {
+                    gameState.location = 'hidden_chamber';
+                    gameState.secretRoomsFound.push('hidden_chamber');
+                    gameState.searched = false;
+                    gameState.foundItems = [];
+                    setBackground(bgColors.hidden_chamber);
+                    showToast('🔓 Картина открывает проход!');
+                    render();
+                    return;
+                }
+            }
+            
+            // Проверка на сокровищницу в подвале
+            if (actionCode === 'search' && gameState.location === 'basement') {
+                if (gameState.inventory.includes('key') && !gameState.secretRoomsFound.includes('treasure_vault')) {
+                    gameState.location = 'treasure_vault';
+                    gameState.secretRoomsFound.push('treasure_vault');
+                    gameState.searched = false;
+                    gameState.foundItems = [];
+                    setBackground(bgColors.treasure_vault);
+                    showToast('🔓 Тайная дверь открывается!');
+                    render();
+                    return;
+                }
+            }
+            
+            // Проверка на ритуальный зал
+            if (actionCode === 'ritual' && gameState.location === 'basement') {
+                if (gameState.inventory.includes('knife') && !gameState.secretRoomsFound.includes('ritual_room')) {
+                    gameState.location = 'ritual_room';
+                    gameState.secretRoomsFound.push('ritual_room');
+                    gameState.searched = false;
+                    gameState.foundItems = [];
+                    setBackground(bgColors.ritual_room);
+                    showToast('🔮 Ритуал открывает проход!');
+                    render();
+                    return;
+                }
+            }
+            
+            // Проверка на обсерваторию
+            if (actionCode === 'search' && gameState.location === 'attic') {
+                if (gameState.inventory.includes('spyglass') && !gameState.secretRoomsFound.includes('observatory')) {
+                    gameState.location = 'observatory';
+                    gameState.secretRoomsFound.push('observatory');
+                    gameState.searched = false;
+                    gameState.foundItems = [];
+                    setBackground(bgColors.observatory);
+                    showToast('🔓 Телескоп показывает потайную дверь!');
+                    render();
+                    return;
+                }
+            }
+            
+            // Обычные перемещения
             if (locations[actionCode]) {
                 gameState.location = actionCode;
+                gameState.searched = false;
+                gameState.foundItems = [];
                 setBackground(locations[actionCode].bg);
                 showToast(`🚪 Переход в ${locations[actionCode].name}`);
                 render();
                 return;
             }
             
-            // Действия
+            // Выход из секретной комнаты
+            if (secretRooms[gameState.location] && secretRooms[gameState.location].actions) {
+                const secret = secretRooms[gameState.location];
+                for (let action of secret.actions) {
+                    if (action.action === actionCode) {
+                        if (actionCode === 'search') {
+                            searchRoom();
+                            return;
+                        } else if (actionCode === 'ritual') {
+                            gameState.flags.ritual_completed = true;
+                            showToast('🕯️ Ты проводишь ритуал...');
+                            setTimeout(() => {
+                                if (gameState.inventory.includes('knife') && gameState.inventory.includes('book1')) {
+                                    showToast('✨ Ритуал успешен!');
+                                } else {
+                                    showToast('💀 Что-то пошло не так...');
+                                    gameState.health -= 30;
+                                }
+                                if (checkAllEndings()) {
+                                    render();
+                                    return;
+                                }
+                                render();
+                            }, 2000);
+                            return;
+                        } else {
+                            gameState.location = action.action;
+                            gameState.searched = false;
+                            gameState.foundItems = [];
+                            setBackground(bgColors[locations[action.action]?.bg] || bgColors.start);
+                            showToast(`🚪 Возврат в особняк`);
+                            render();
+                            return;
+                        }
+                    }
+                }
+            }
+            
             if (actionCode === 'escape') {
-                gameState.ending = 'escape';
-                render();
+                gameState.flags.escape = true;
+                if (checkAllEndings()) {
+                    render();
+                    return;
+                }
             }
             else if (actionCode === 'search') {
-                if (loc.itemsIds.length > 0) {
-                    showToast('🔍 Ты что-то нашел!');
-                } else {
-                    showToast('🔍 Ничего нет...');
-                    gameState.sanity -= 2;
-                    render();
-                }
+                searchRoom();
             }
             else if (actionCode === 'call') {
                 showToast('📞 Гудки...');
@@ -837,122 +1555,152 @@
                     gameState.sanity -= 5;
                     render();
                 }, 2000);
+                return;
             }
             else if (actionCode === 'listen') {
                 const whispers = ['"Уходи..."', '"Помоги..."', '"Здесь опасно..."'];
                 showToast(`👂 ${whispers[Math.floor(Math.random() * whispers.length)]}`);
                 gameState.sanity -= 5;
-                render();
-            }
-            else if (actionCode === 'flashlight') {
-                if (gameState.inventory.includes('flashlight')) {
-                    showToast('🔦 Тень метнулась!');
-                    gameState.sanity -= 3;
-                } else {
-                    showToast('🔦 Нет фонарика');
-                }
-                render();
-            }
-            else if (actionCode === 'knock') {
-                showToast('🚪 Тук-тук-тук...');
-                setTimeout(() => showToast('🚪 Дверь открывается...'), 800);
-                setTimeout(() => {
-                    showToast('👀 Там никого...');
-                    gameState.sanity -= 5;
-                    render();
-                }, 1600);
-            }
-            else if (actionCode === 'checkDoors') {
-                showToast('🚪 Двери скрипят...');
-                if (!gameState.flags.basement && Math.random() < 0.3) {
-                    showToast('🔍 Найден проход в подвал!');
-                    gameState.flags.basement = true;
-                }
-                render();
             }
             else if (actionCode === 'mirror') {
+                gameState.flags.mirror_seen = true;
                 showToast('🪞 Зеркало затуманилось...');
                 setTimeout(() => {
                     if (gameState.inventory.includes('glasses')) {
                         showToast('👓 Ты видишь призрака! -20 здоровья');
                         gameState.health -= 20;
-                        if (gameState.health <= 0) gameState.ending = 'death';
+                        gameState.flags.truth_seen = true;
                     } else {
                         showToast('👤 Силуэт исчез... -5 рассудка');
                         gameState.sanity -= 5;
-                        if (gameState.sanity <= 0) gameState.ending = 'madness';
+                    }
+                    if (checkAllEndings()) {
+                        render();
+                        return;
                     }
                     render();
                 }, 1500);
+                return;
             }
-            else if (actionCode === 'chest') {
-                if (gameState.inventory.includes('key')) {
-                    showToast('⚰️ Сундук открывается...');
-                    setTimeout(() => {
-                        showToast('✨ Там кольцо!');
-                        gameState.inventory.push('ring');
-                        gameState.ending = 'treasure';
+            else if (actionCode === 'ritual') {
+                gameState.flags.ritual_completed = true;
+                showToast('🕯️ Ты проводишь ритуал...');
+                setTimeout(() => {
+                    if (gameState.inventory.includes('knife') && gameState.inventory.includes('book1')) {
+                        showToast('✨ Ритуал успешен!');
+                    } else {
+                        showToast('💀 Что-то пошло не так...');
+                        gameState.health -= 30;
+                    }
+                    if (checkAllEndings()) {
                         render();
-                    }, 1500);
-                } else {
-                    showToast('🔒 Сундук заперт');
-                }
+                        return;
+                    }
+                    render();
+                }, 2000);
+                return;
             }
-            else if (actionCode === 'takeBook') {
-                if (!gameState.inventory.includes('book')) {
-                    gameState.inventory.push('book');
-                    showToast('📖 Книга открывается...');
-                    setTimeout(() => {
-                        showNote('"Тьма внутри тебя"');
-                        gameState.sanity -= 5;
-                        render();
-                    }, 1000);
-                }
-            }
-            else if (actionCode === 'lightCandle') {
-                if (gameState.inventory.includes('matches') && gameState.inventory.includes('candle')) {
-                    showToast('🕯️ Свеча зажглась!');
-                } else {
-                    showToast('🪔 Нет спичек или свечи');
-                }
+            
+            if (checkAllEndings()) {
                 render();
+                return;
             }
+            
+            render();
         }
 
         function newGame() {
+            // Рандомизируем предметы заново
+            itemsByLocation = randomizeItems();
+            
+            // Обновляем предметы в обычных локациях
+            for (let room of regularRooms) {
+                if (itemsByLocation[room]) {
+                    locations[room].items = itemsByLocation[room];
+                } else {
+                    locations[room].items = [];
+                }
+            }
+            
+            // Сбрасываем предметы в секретных комнатах
+            for (let room in secretRooms) {
+                if (secretRooms[room].items) {
+                    // Оставляем как есть, они всегда содержат ключевые предметы
+                }
+            }
+            
             gameState = {
                 location: 'start',
                 inventory: [],
+                foundItems: [],
                 health: 100,
                 sanity: 100,
                 flags: {},
-                ending: null
+                searched: false,
+                ending: null,
+                inMenu: false,
+                secretRoomsFound: []
             };
-            
-            // Сброс предметов
-            locations.start.items = ['🔦 Фонарик', '🪔 Спички'];
-            locations.start.itemsIds = ['flashlight', 'matches'];
-            locations.hall.items = ['🗝️ Ключ', '📜 Записка'];
-            locations.hall.itemsIds = ['key', 'note'];
-            locations.living_room.items = ['📔 Дневник', '⏰ Часы'];
-            locations.living_room.itemsIds = ['diary', 'clock'];
-            locations.library.items = ['📖 Книга', '👓 Очки'];
-            locations.library.itemsIds = ['book', 'glasses'];
-            locations.dining_room.items = ['🔪 Серебро', '🕯️ Свеча'];
-            locations.dining_room.itemsIds = ['silver', 'candle'];
-            locations.attic.items = ['⚰️ Сундук', '💍 Кольцо'];
-            locations.attic.itemsIds = ['chest', 'ring'];
             
             setBackground(bgColors.start);
             showToast('🔄 Новая игра');
             render();
         }
 
+        function showMenu() {
+            gameState.inMenu = true;
+            render();
+        }
+
+        function goToMenu() {
+            gameState.inMenu = true;
+            gameState.ending = null;
+            render();
+        }
+
         function render() {
             const app = document.getElementById('app');
             
+            // Главное меню
+            if (gameState.inMenu) {
+                let endingsHtml = '';
+                for (let [key, ending] of Object.entries(endings)) {
+                    const unlocked = endingsUnlocked.includes(key);
+                    endingsHtml += `
+                        <div class="ending-item ${unlocked ? 'unlocked' : ''}">
+                            <div class="emoji">${ending.emoji}</div>
+                            <div class="name">${ending.name}</div>
+                            <div class="desc">${unlocked ? ending.desc : '???'}</div>
+                        </div>
+                    `;
+                }
+                
+                app.innerHTML = `
+                    <div class="menu">
+                        <h1>ЗАБРОШЕННЫЙ</h1>
+                        <h1>ОСОБНЯК</h1>
+                        <div class="menu-subtitle">15+ КОМНАТ • 5 СЕКРЕТНЫХ • 20 КОНЦОВОК</div>
+                        
+                        <button class="menu-btn" onclick="newGame()">
+                            <span>🎮</span> НАЧАТЬ ИГРУ
+                        </button>
+                        
+                        <div class="endings-list">
+                            <div class="endings-title">
+                                <span>🏆 КОНЦОВКИ (${endingsUnlocked.length}/20)</span>
+                            </div>
+                            <div class="endings-grid">
+                                ${endingsHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Концовка
             if (gameState.ending) {
-                const end = endings[gameState.ending] || { name: 'КОНЕЦ', desc: '', type: 'neutral' };
+                const end = endings[gameState.ending];
                 
                 app.innerHTML = `
                     <div class="ending">
@@ -963,69 +1711,107 @@
                             <div class="stat-item"><div class="stat-value">${gameState.sanity}</div><div>🧠</div></div>
                             <div class="stat-item"><div class="stat-value">${gameState.inventory.length}</div><div>🎒</div></div>
                         </div>
-                        <button class="new-game-btn" onclick="newGame()">🔄 ИГРАТЬ СНОВА</button>
+                        <div class="ending-buttons">
+                            <button class="ending-btn" onclick="newGame()">🔄 НОВАЯ ИГРА</button>
+                            <button class="ending-btn" onclick="goToMenu()">🏠 ГЛАВНОЕ МЕНЮ</button>
+                        </div>
                     </div>
                 `;
                 return;
             }
             
-            const loc = locations[gameState.location];
+            // Игра
+            const loc = locations[gameState.location] || secretRooms[gameState.location];
+            if (!loc) {
+                // Если локация не найдена, возвращаем в холл
+                gameState.location = 'hall';
+                render();
+                return;
+            }
             
-            // Атмосфера
+            // Проверяем, секретная ли это комната
+            const isSecret = Object.keys(secretRooms).includes(gameState.location);
+            
             let atmosphereHtml = '';
+            
             if (loc.atmosphere === 'hall') {
-                atmosphereHtml = '<div class="door door1"></div><div class="door door2"></div><div class="door door3"></div>';
+                atmosphereHtml = `
+                    <div class="door door1"></div>
+                    <div class="door door2"></div>
+                    <div class="door door3"></div>
+                `;
             } else if (loc.atmosphere === 'library') {
-                atmosphereHtml = '<div class="book book1"></div><div class="book book2"></div><div class="book book3"></div>';
+                atmosphereHtml = `
+                    <div class="book book1"></div>
+                    <div class="book book2"></div>
+                    <div class="book book3"></div>
+                `;
             } else if (loc.atmosphere === 'attic') {
-                atmosphereHtml = '<div class="mirror"></div><div class="shadow"></div>';
-                for (let i = 0; i < 3; i++) {
-                    atmosphereHtml += `<div class="dust" style="left: ${Math.random()*100}%; animation-delay: ${i*2}s"></div>`;
-                }
+                atmosphereHtml = `
+                    <div class="mirror"></div>
+                    <div class="shadow"></div>
+                    <div class="dust" style="left: 10%; animation-delay: 0s;"></div>
+                    <div class="dust" style="left: 30%; animation-delay: 2s;"></div>
+                    <div class="dust" style="left: 50%; animation-delay: 4s;"></div>
+                `;
             } else if (loc.atmosphere === 'dining_room') {
-                atmosphereHtml = '<div class="whisper">👤</div>';
-            } else if (loc.atmosphere === 'stairs') {
-                atmosphereHtml = '<div class="creak"></div>';
+                atmosphereHtml = `<div class="whisper">👤</div>`;
+            } else if (loc.atmosphere === 'crypt') {
+                atmosphereHtml = `<div class="dust" style="left: 20%;"></div><div class="dust" style="left: 70%;"></div>`;
+            } else if (loc.atmosphere === 'observatory') {
+                atmosphereHtml = `<div class="book book1"></div><div class="book book2"></div>`;
+            } else if (loc.atmosphere === 'ritual_room') {
+                atmosphereHtml = `<div class="mirror"></div>`;
             }
             
             let html = `
                 <div class="header">
                     <h1>ЗАБРОШЕННЫЙ</h1>
                     <h1>ОСОБНЯК</h1>
-                    <div class="location-badge">📍 ${loc.name}</div>
+                    <div class="location-badge" onclick="goToMenu()">📍 ${loc.name} (меню)</div>
                 </div>
                 
                 <div class="location-card">
                     <div class="atmosphere">${atmosphereHtml}</div>
+                    ${isSecret ? '<div class="secret-indicator">🔮 СЕКРЕТНАЯ КОМНАТА</div>' : ''}
                     <div class="location-name">${loc.name}</div>
                     <div class="location-desc">${loc.desc}</div>
                 </div>
                 
                 <div class="stats">
-                    <div class="stat-item"><div class="stat-value">${gameState.health}</div><div class="stat-label">❤️ Здоровье</div></div>
-                    <div class="stat-item"><div class="stat-value">${gameState.sanity}</div><div class="stat-label">🧠 Рассудок</div></div>
-                    <div class="stat-item"><div class="stat-value">${gameState.inventory.length}</div><div class="stat-label">🎒 Предметы</div></div>
+                    <div class="stat-item"><div class="stat-value">${gameState.health}</div><div class="stat-label">❤️</div></div>
+                    <div class="stat-item"><div class="stat-value">${gameState.sanity}</div><div class="stat-label">🧠</div></div>
+                    <div class="stat-item"><div class="stat-value">${gameState.inventory.length}</div><div class="stat-label">🎒</div></div>
                 </div>
             `;
             
-            if (loc.items.length > 0) {
+            html += `
+                <button class="search-btn" onclick="searchRoom()">
+                    <span>🔍</span> ОСМОТРЕТЬСЯ
+                </button>
+            `;
+            
+            if (gameState.foundItems.length > 0) {
                 html += `
-                    <div class="items-section">
-                        <div class="items-list">
-                            ${loc.items.map(item => `<span class="item-chip">${item}</span>`).join('')}
+                    <div class="found-items visible">
+                        <div class="found-title">
+                            <span>📦 НАЙДЕНО В КОМНАТЕ:</span>
                         </div>
-                        <button class="take-btn" onclick="takeItem()">
-                            <span>🎒</span> ВЗЯТЬ ПРЕДМЕТ
-                        </button>
+                        <div class="found-grid">
+                            ${gameState.foundItems.map(item => 
+                                `<div class="found-item" onclick="takeItem('${item.id}')">${item.name}</div>`
+                            ).join('')}
+                        </div>
                     </div>
                 `;
-            } else {
-                html += `
-                    <button class="take-btn" disabled>
-                        <span>🚫</span> НЕТ ПРЕДМЕТОВ
-                    </button>
-                `;
             }
+            
+            html += `
+                <button class="take-btn" ${gameState.foundItems.length === 0 ? 'disabled' : ''} 
+                        onclick="if(${gameState.foundItems.length > 0}) takeItem(gameState.foundItems[0].id)">
+                    <span>🎒</span> ВЗЯТЬ ПРЕДМЕТЫ
+                </button>
+            `;
             
             html += `<div class="actions">`;
             loc.actions.forEach(action => {
@@ -1036,12 +1822,26 @@
             if (gameState.inventory.length > 0) {
                 html += `
                     <div class="inventory">
-                        <div class="inventory-title">🎒 ИНВЕНТАРЬ</div>
-                        <div class="inventory-items">
-                            ${gameState.inventory.map(id => 
-                                `<span class="inventory-item">${items[id]}</span>`
-                            ).join('')}
+                        <div class="inventory-title">
+                            <span>🎒 ИНВЕНТАРЬ</span>
+                            <span class="menu-btn-small" onclick="goToMenu()">🏠 МЕНЮ</span>
                         </div>
+                        <div class="inventory-items">
+                            ${gameState.inventory.map(id => {
+                                const item = allItems.find(i => i.id === id);
+                                return `<span class="inventory-item">${item ? item.name : id}</span>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="inventory">
+                        <div class="inventory-title">
+                            <span>🎒 ИНВЕНТАРЬ</span>
+                            <span class="menu-btn-small" onclick="goToMenu()">🏠 МЕНЮ</span>
+                        </div>
+                        <div>Пусто</div>
                     </div>
                 `;
             }
@@ -1049,14 +1849,16 @@
             app.innerHTML = html;
         }
 
-        // Запуск
         window.onload = () => {
             setBackground(bgColors.start);
-            render();
+            showMenu();
             
             tg.MainButton.setText('💾 СОХРАНИТЬ');
             tg.MainButton.onClick(() => {
-                tg.sendData(JSON.stringify(gameState));
+                tg.sendData(JSON.stringify({
+                    gameState: gameState,
+                    endingsUnlocked: endingsUnlocked
+                }));
                 showToast('💾 Сохранено!');
             });
             tg.MainButton.show();
